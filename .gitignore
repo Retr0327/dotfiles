@@ -1,0 +1,16 @@
+*
+!.gitignore
+
+!wezterm/
+!wezterm/**
+
+!nvim/
+!nvim/**
+
+!tmux/
+!tmux/**
+tmux/plugins/
+
+!cspell/
+!cspell/**
+cspell/dicts/node_modules
