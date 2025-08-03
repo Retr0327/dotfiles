@@ -1,0 +1,14 @@
+folke
+tpope
+retr0
+golangcli
+wemo
+linego
+healthcheck
+tmux_sessionizer
+libuv
+lualine
+toggleterm
+mapleader
+maplocalleader
+

@@ -1,0 +1,15 @@
+$schema: https://raw.githubusercontent.com/streetsidesoftware/cspell/main/cspell.schema.json
+
+language: en
+import:
+  - ~/.config/cspell/dicts/node_modules/@cspell/dict-vim/cspell-ext.json
+
+dictionaries:
+  - custom
+  - shellscript
+  - vim
+
+dictionaryDefinitions:
+  - name: "custom"
+    path: "~/.config/cspell/custom.txt"
+    addWords: true
