@@ -27,7 +27,6 @@ config.window_background_image_hsb = {
 	brightness = 0.08,
 }
 
-config.color_scheme = "Tomorrow (dark) (terminal.sexy)"
 config.colors = {
 	cursor_bg = "#ffffff",
 }
