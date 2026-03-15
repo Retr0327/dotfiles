@@ -46,6 +46,38 @@ return {
     picker = {
       enabled = true,
       ui_select = true,
+      actions = {
+        yank_diagnostic = function(picker, item)
+          if not item then return end
+          local diag = item.item
+          local value
+          if diag and diag.message then
+            local fname = vim.fn.fnamemodify(item.file or "", ":t")
+            local line = item.pos and item.pos[1] or (diag.lnum + 1)
+            local col = item.pos and item.pos[2] or diag.col
+            local code = diag.code and tostring(diag.code) or ""
+            local source = diag.source or ""
+            value = string.format(
+              " %s %s (%s)   %s:%s:%s",
+              diag.message, source, code, fname, line, col
+            )
+          else
+            value = item.text or ""
+          end
+          vim.fn.setreg(vim.v.register, value)
+          Snacks.notify(
+            ("Yanked to register `%s`:\n```\n%s\n```"):format(vim.v.register, value),
+            { title = "Snacks Picker" }
+          )
+        end,
+      },
+      win = {
+        input = {
+          keys = {
+            ["<c-y>"] = { "yank_diagnostic", mode = { "i", "n" }, desc = "Yank diagnostic" },
+          },
+        },
+      },
       sources = {
         explorer = {
           live = true,
