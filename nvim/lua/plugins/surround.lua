@@ -1,32 +1,19 @@
 return {
-  "tpope/vim-surround",
-  dependencies = { "folke/snacks.nvim" },
-  init = function()
-    vim.keymap.set("n", "ysiwg", function()
-      vim.cmd("normal! yiw")
-      local word = vim.fn.getreg('"')
+  "kylechui/nvim-surround",
+  version = "^3.0.0", -- Use for stability; omit to use `main` branch for the latest features
+  event = "VeryLazy",
+  opts = {
+    surrounds = {
+      ["g"] = {
+        add = function()
+          local config = require("nvim-surround.config")
+          local input = config.get_input("Type: ")
 
-      require("snacks").input({
-        prompt = "Type: ",
-        default = "",
-        icon = " ",
-        win = {
-          style = "input",
-          position = "float",
-          relative = "editor",
-          width = 60,
-          height = 1,
-          row = math.floor((vim.o.lines - 10) / 2),
-          col = math.floor((vim.o.columns - 60) / 2),
-          border = "rounded",
-        },
-      }, function(value)
-        if value and value ~= "" then
-          local result = value .. "<" .. word .. ">"
-          vim.cmd("normal! ciw")
-          vim.api.nvim_put({ result }, "c", false, true)
-        end
-      end)
-    end)
-  end,
+          if input then
+            return { { input .. "<" }, { ">" } }
+          end
+        end,
+      },
+    },
+  },
 }
