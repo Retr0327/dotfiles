@@ -8,15 +8,54 @@ importers:
 
   .:
     dependencies:
+      '@cspell/dict-golang':
+        specifier: ^6.0.26
+        version: 6.0.26
+      '@cspell/dict-node':
+        specifier: ^5.0.9
+        version: 5.0.9
+      '@cspell/dict-python':
+        specifier: ^4.2.25
+        version: 4.2.25
+      '@cspell/dict-typescript':
+        specifier: ^3.2.3
+        version: 3.2.3
       '@cspell/dict-vim':
-        specifier: ^1.0.8
-        version: 1.0.8
+        specifier: ^1.0.10
+        version: 1.0.10
 
 packages:
 
-  '@cspell/dict-vim@1.0.8':
-    resolution: {integrity: sha512-LUnznQiaNatVfb89pu916qYJwbkvgTKyNXK17MRHm1AgcCxN5Z1V5hyqTlQumhQYVAFFvN8t9VQDUw6k47spiw==}
+  '@cspell/dict-data-science@2.0.13':
+    resolution: {integrity: sha512-l1HMEhBJkPmw4I2YGVu2eBSKM89K9pVF+N6qIr5Uo5H3O979jVodtuwP8I7LyPrJnC6nz28oxeGRCLh9xC5CVA==}
+
+  '@cspell/dict-golang@6.0.26':
+    resolution: {integrity: sha512-YKA7Xm5KeOd14v5SQ4ll6afe9VSy3a2DWM7L9uBq4u3lXToRBQ1W5PRa+/Q9udd+DTURyVVnQ+7b9cnOlNxaRg==}
+
+  '@cspell/dict-node@5.0.9':
+    resolution: {integrity: sha512-hO+ga+uYZ/WA4OtiMEyKt5rDUlUyu3nXMf8KVEeqq2msYvAPdldKBGH7lGONg6R/rPhv53Rb+0Y1SLdoK1+7wQ==}
+
+  '@cspell/dict-python@4.2.25':
+    resolution: {integrity: sha512-hDdN0YhKgpbtZVRjQ2c8jk+n0wQdidAKj1Fk8w7KEHb3YlY5uPJ0mAKJk7AJKPNLOlILoUmN+HAVJz+cfSbWYg==}
+
+  '@cspell/dict-typescript@3.2.3':
+    resolution: {integrity: sha512-zXh1wYsNljQZfWWdSPYwQhpwiuW0KPW1dSd8idjMRvSD0aSvWWHoWlrMsmZeRl4qM4QCEAjua8+cjflm41cQBg==}
+
+  '@cspell/dict-vim@1.0.10':
+    resolution: {integrity: sha512-eP+bKOr/nhxYQJuBM8e5Kj33dwJcfo5MTcKYd9WOEJ68qNrGXzfcZtlNmuncTTRQmS8k90Khl6JNZGSANwevig==}
 
 snapshots:
 
-  '@cspell/dict-vim@1.0.8': {}
+  '@cspell/dict-data-science@2.0.13': {}
+
+  '@cspell/dict-golang@6.0.26': {}
+
+  '@cspell/dict-node@5.0.9': {}
+
+  '@cspell/dict-python@4.2.25':
+    dependencies:
+      '@cspell/dict-data-science': 2.0.13
+
+  '@cspell/dict-typescript@3.2.3': {}
+
+  '@cspell/dict-vim@1.0.10': {}

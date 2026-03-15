@@ -1,15 +1,9 @@
 {
-  "name": "dicts",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
   "dependencies": {
-    "@cspell/dict-vim": "^1.0.8"
+    "@cspell/dict-golang": "^6.0.26",
+    "@cspell/dict-node": "^5.0.9",
+    "@cspell/dict-python": "^4.2.25",
+    "@cspell/dict-typescript": "^3.2.3",
+    "@cspell/dict-vim": "^1.0.10"
   }
 }
