@@ -33,9 +33,6 @@ return {
       async = false,
       quiet = false,
       timeout_ms = 3000,
-      callback = function()
-        vim.cmd("write")
-      end,
     },
     ---@type table<string, conform.FormatterConfigOverride|fun(bufnr: integer): nil|conform.FormatterConfigOverride>
     formatters = {
