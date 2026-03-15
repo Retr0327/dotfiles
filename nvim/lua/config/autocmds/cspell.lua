@@ -1,22 +1,14 @@
 vim.api.nvim_create_user_command("CSpellAdd", function(opts)
-	-- Get the cspell file path
 	local cspell_file = vim.fn.expand("~/.config/cspell/custom.txt")
 
-	local Terminal = require("toggleterm.terminal").Terminal
-	local viewer = Terminal:new({
-		cmd = "nvim ~/.config/cspell/custom.txt",
-		direction = "float",
-		float_opts = {
-			border = "rounded",
-		},
-		hidden = true,
-	})
+	local function open_viewer()
+		Snacks.terminal("nvim " .. cspell_file)
+	end
 
-	-- Get the word to append
 	local word = opts.args
 
 	if word == "o" then
-		viewer:open()
+		open_viewer()
 		return
 	end
 
@@ -48,7 +40,7 @@ vim.api.nvim_create_user_command("CSpellAdd", function(opts)
 		vim.notify("Word already exists in cspell dictionary", vim.log.levels.INFO)
 	end
 
-	viewer:open()
+	open_viewer()
 end, {
 	nargs = 1,
 	desc = "Append word to cspell dictionary and open in floating terminal",
