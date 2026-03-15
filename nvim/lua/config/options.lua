@@ -48,7 +48,6 @@ vim.opt.undofile = true
 vim.opt.termguicolors = true
 
 vim.opt.scrolloff = 10
-vim.signcolum = "yes"
 vim.opt.isfname:append("@-@")
 
 vim.opt.updatetime = 50
