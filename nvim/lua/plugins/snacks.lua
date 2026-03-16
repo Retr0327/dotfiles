@@ -48,7 +48,9 @@ return {
       ui_select = true,
       actions = {
         yank_diagnostic = function(picker, item)
-          if not item then return end
+          if not item then
+            return
+          end
           local diag = item.item
           local value
           if diag and diag.message then
@@ -57,18 +59,12 @@ return {
             local col = item.pos and item.pos[2] or diag.col
             local code = diag.code and tostring(diag.code) or ""
             local source = diag.source or ""
-            value = string.format(
-              " %s %s (%s)   %s:%s:%s",
-              diag.message, source, code, fname, line, col
-            )
+            value = string.format(" %s %s (%s)   %s:%s:%s", diag.message, source, code, fname, line, col)
           else
             value = item.text or ""
           end
           vim.fn.setreg(vim.v.register, value)
-          Snacks.notify(
-            ("Yanked to register `%s`:\n```\n%s\n```"):format(vim.v.register, value),
-            { title = "Snacks Picker" }
-          )
+          Snacks.notify(value, { title = "Yanked Diagnostic" })
         end,
       },
       win = {
