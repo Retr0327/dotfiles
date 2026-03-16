@@ -254,7 +254,14 @@ return {
     {
       "<leader>e",
       function()
-        require("snacks").explorer()
+        local snacks = require("snacks")
+        local existing = snacks.picker.get({ source = "explorer" })[1]
+        if existing then
+          vim.g._explorer_last_cwd = existing:cwd()
+          existing:close()
+        else
+          snacks.explorer({ cwd = vim.g._explorer_last_cwd })
+        end
       end,
       desc = "[E]xplorer",
     },
