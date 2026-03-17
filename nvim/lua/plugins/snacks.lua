@@ -64,6 +64,7 @@ return {
             value = item.text or ""
           end
           vim.fn.setreg(vim.v.register, value)
+          vim.fn.setreg("+", value)
           Snacks.notify(value, { title = "Yanked Diagnostic" })
         end,
       },
