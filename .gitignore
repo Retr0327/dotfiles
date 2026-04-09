@@ -1,8 +1,8 @@
 *
 !.gitignore
 
-!wezterm/
-!wezterm/**
+!ghostty/
+!ghostty/**
 
 !nvim/
 !nvim/**

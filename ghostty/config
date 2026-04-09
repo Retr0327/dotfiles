@@ -1,0 +1,37 @@
+font-family = JetbrainsMono Nerd Font
+font-family = PingFang TC
+font-style = Medium
+font-size = 19
+# font-thicken = true
+
+adjust-cell-width = 5%
+adjust-cell-height = 5%
+
+adjust-underline-position = 15%
+adjust-underline-thickness = 50%
+
+cursor-style = block
+cursor-style-blink = false
+
+shell-integration-features = no-cursor
+
+background-image = ./1318988.jpeg
+background-image-fit = cover
+background-image-opacity = 0.4
+
+background = #020203
+background-opacity = 0.85
+#background-blur-radius = 20
+
+window-width = 100
+window-height = 30
+window-padding-x = 10,0
+window-padding-y = 10,0
+
+# MacOS
+macos-option-as-alt = true
+macos-titlebar-style= hidden
+
+foreground = #c4c7cc
+
+
