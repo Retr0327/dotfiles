@@ -1,8 +1,9 @@
 {
   "dependencies": {
     "@cspell/dict-golang": "^6.0.26",
+    "@cspell/dict-java": "^5.0.12",
     "@cspell/dict-node": "^5.0.9",
-    "@cspell/dict-python": "^4.2.25",
+    "@cspell/dict-python": "^4.2.26",
     "@cspell/dict-typescript": "^3.2.3",
     "@cspell/dict-vim": "^1.0.10"
   }
