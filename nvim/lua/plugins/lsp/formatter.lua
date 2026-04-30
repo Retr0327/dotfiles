@@ -21,6 +21,7 @@ return {
       lua = { "stylua" },
       sh = { "shfmt", "shellcheck" },
       go = { "goimports", "gofumpt" },
+      java = {}, -- use LSP fallback (jdtls)
       python = {
         "ruff_fix",
         "ruff_format",
