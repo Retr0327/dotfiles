@@ -1,6 +1,10 @@
 vim.g.mapleader = " "
 vim.g.maplocalleader = "  "
 
+vim.keymap.set("n", "<leader><space>", function()
+  vim.cmd("b#")
+end)
+
 -- move selected line / block of text in visual mode
 vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv")
 vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv")
@@ -30,21 +34,6 @@ vim.keymap.set("n", "<CR>", function()
     return "k<CR>"
   end
 end, { expr = true })
-
-vim.keymap.set("n", "<leader>as", function()
-  local word = vim.fn.expand("<cword>")
-  if word == "" or word:match("^%s*$") then
-    vim.ui.input({
-      prompt = "Enter word to add to cspell: ",
-    }, function(input)
-      if input and input ~= "" then
-        vim.cmd("CSpellAdd " .. input)
-      end
-    end)
-  else
-    vim.cmd("CSpellAdd " .. word)
-  end
-end, { desc = "Add CSpell" })
 
 vim.keymap.set("n", "<leader>wv", "<C-w>v", { desc = "Split window vertically" })
 vim.keymap.set("n", "<leader>ws", "<C-w>s", { desc = "Split window horizontally" })
