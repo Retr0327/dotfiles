@@ -2,8 +2,6 @@ folke
 tpope
 retr0
 golangcli
-wemo
-linego
 healthcheck
 tmux_sessionizer
 libuv
