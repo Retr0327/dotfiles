@@ -1,6 +1,9 @@
 *
 !.gitignore
 
+!claude/
+!claude/**
+
 !ghostty/
 !ghostty/**
 
@@ -8,8 +11,8 @@
 !nvim/**
 
 !tmux/
-!tmux/**
-tmux/plugins/
+!tmux/tmux.conf
+!tmux/bin/tmux_sessionizer
 
 !cspell/
 !cspell/**
