@@ -1,3 +1,7 @@
+local function set_lazygit_border_highlights()
+  vim.api.nvim_set_hl(0, "SnacksLazyGitBorder", { fg = "#ffffff", bg = "NONE" })
+end
+
 return {
   "folke/snacks.nvim",
   dependencies = {
@@ -5,6 +9,14 @@ return {
   },
   priority = 1000,
   lazy = false,
+  init = function()
+    local group = vim.api.nvim_create_augroup("user_snacks_lazygit_border", { clear = true })
+    vim.api.nvim_create_autocmd("ColorScheme", {
+      group = group,
+      callback = set_lazygit_border_highlights,
+    })
+    set_lazygit_border_highlights()
+  end,
   opts = {
     bigfile = {
       enabled = true,
@@ -69,6 +81,11 @@ return {
         end,
       },
       win = {
+        list = {
+          wo = {
+            cursorlineopt = "line",
+          },
+        },
         input = {
           keys = {
             ["<c-y>"] = { "yank_diagnostic", mode = { "i", "n" }, desc = "Yank diagnostic" },
@@ -96,6 +113,13 @@ return {
       },
     },
     notifier = { enabled = true },
+    styles = {
+      lazygit = {
+        wo = {
+          winhighlight = "Normal:SnacksNormal,NormalNC:SnacksNormalNC,WinBar:SnacksWinBar,WinBarNC:SnacksWinBarNC,FloatTitle:SnacksTitle,FloatFooter:SnacksFooter,WinSeparator:SnacksWinSeparator,FloatBorder:SnacksLazyGitBorder",
+        },
+      },
+    },
     statuscolumn = { enabled = true },
     words = { enabled = true },
     terminal = {
@@ -111,7 +135,14 @@ return {
       },
     },
     scope = { enabled = true },
-    lazygit = { configure = vim.fn.executable("lazygit") == 1 },
+    lazygit = {
+      configure = vim.fn.executable("lazygit") == 1,
+      theme = {
+        activeBorderColor = { fg = "SnacksLazyGitBorder", bold = true },
+        inactiveBorderColor = { fg = "SnacksLazyGitBorder" },
+        searchingActiveBorderColor = { fg = "SnacksLazyGitBorder", bold = true },
+      },
+    },
   },
   keys = {
     -- search
@@ -318,13 +349,4 @@ return {
       desc = "Delete Buffer",
     },
   },
-  init = function()
-    vim.api.nvim_create_autocmd("User", {
-      pattern = "VeryLazy",
-      callback = function()
-        vim.api.nvim_set_hl(0, "SnacksPickerGitStatusUntracked", { fg = "#50fa7b" })
-        vim.api.nvim_set_hl(0, "SnacksPickerGitStatusModified", { fg = "#FFE066" })
-      end,
-    })
-  end,
 }
