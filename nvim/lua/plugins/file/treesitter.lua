@@ -14,6 +14,7 @@ return {
         "lua",
         "python",
         "rust",
+        "java",
         "vimdoc",
 
         "go",
