@@ -3,6 +3,7 @@ vim.g.netrw_banner = 0
 vim.g.netrw_winsize = 25
 
 -- vim.opt.guicursor = ""
+vim.opt.fillchars:append({ eob = " " })
 vim.opt.winborder = "rounded"
 
 vim.opt.pumheight = 10
@@ -57,9 +58,5 @@ vim.opt.updatetime = 50
 -- vim.opt.colorcolumn = "80"
 
 vim.wo.signcolumn = "yes"
-
-vim.api.nvim_set_hl(0, "LineNrAbove", { fg = "#585b70", bold = false })
-vim.api.nvim_set_hl(0, "LineNr", { fg = "#cdd6f4", bold = true })
-vim.api.nvim_set_hl(0, "LineNrBelow", { fg = "#585b70", bold = false })
 
 vim.opt.showtabline = 0
