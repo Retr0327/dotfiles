@@ -11,4 +11,6 @@ lualine
 toggleterm
 mapleader
 maplocalleader
-
+vim
+resty
+gorm
