@@ -38,6 +38,29 @@ vim.api.nvim_create_autocmd({ "FocusGained", "BufEnter", "CursorHold" }, {
   end,
 })
 
+-- Restore terminal insert mode after returning from another app/workspace.
+vim.api.nvim_create_autocmd("FocusGained", {
+  group = auto_reload_group,
+  pattern = "*",
+  callback = function()
+    if vim.fn.mode() == "c" then
+      return
+    end
+
+    if vim.bo.buftype ~= "terminal" then
+      return
+    end
+
+    vim.schedule(function()
+      if vim.bo.buftype ~= "terminal" then
+        return
+      end
+
+      pcall(vim.cmd.startinsert)
+    end)
+  end,
+})
+
 -- Refresh gitsigns after file reload
 vim.api.nvim_create_autocmd("FileChangedShellPost", {
   group = auto_reload_group,
