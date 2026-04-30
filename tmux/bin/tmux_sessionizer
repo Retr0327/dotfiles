@@ -1,36 +1,57 @@
 #!/usr/bin/env zsh
 
-search_paths=(
-    "$HOME/.config"
-    "$HOME/codes/LineGo/taxigo_console"
-    "$HOME/codes/LineGo/line_taxi/taxigo_api"
-    "$HOME/codes/LineGo/line_taxi/taxigo_bot"
-)
+readonly CONFIG_FILE="$HOME/.config/tmux/bin/paths.zsh"
+
+if [[ -f "$CONFIG_FILE" ]]; then
+    source "$CONFIG_FILE"
+else
+    echo "Error: config file not found: $CONFIG_FILE" >&2
+    read -k 1 -s "?Press any key to exit..."
+    exit 1
+fi
 
 switch_to() {
+    local session_name="$1"
     if [[ -z $TMUX ]]; then
-        tmux attach-session -t $1
+        tmux attach-session -t $session_name
     else
-        tmux switch-client -t $1
+        tmux switch-client -t $session_name
     fi
 }
 
 has_session() {
-    tmux list-sessions | grep -q "^$1:"
+    local session_name="$1"
+    tmux has-session -t "=$session_name" 2>/dev/null
 }
 
 hydrate() {
-    if [ -f $2/.tmux-sessionizer ]; then
-        tmux send-keys -t $1 "source $2/.tmux-sessionizer" c-M
-    elif [ -f $HOME/.tmux-sessionizer ]; then
-        tmux send-keys -t $1 "source $HOME/.tmux-sessionizer" c-M
+    local session_name="$1"
+    local target_path="$2"
+
+    if [ -f "$target_path/.tmux-sessionizer" ]; then
+        tmux send-keys -t "$session_name" "source $target_path/.tmux-sessionizer" c-M
+    elif [ -f "$HOME/.tmux-sessionizer" ]; then
+        tmux send-keys -t "$session_name" "source $HOME/.tmux-sessionizer" c-M
     fi
 }
 
 if [[ $# -eq 1 ]]; then
     selected=$1
 else
-    selected=$(find ${search_paths[@]} -mindepth 1 -maxdepth 1 -type d | fzf)
+  if (( ${#exclude_paths[@]} > 0 )); then
+    selected=$(
+      fd . "${search_paths[@]}" --max-depth 1 --type d \
+      | rg -vxFf <(printf "%s/\n" "${exclude_paths[@]}") \
+      | cat - <(printf "%s\n" "${append_paths[@]}") \
+      | fzf
+    )
+  else
+    selected=$(
+      fd . "${search_paths[@]}" --max-depth 1 --type d \
+      | cat - <(printf "%s\n" "${append_paths[@]}") \
+      | fzf
+  )
+fi
 fi
 
 if [[ -z $selected ]]; then
