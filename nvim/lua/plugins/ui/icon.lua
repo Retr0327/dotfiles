@@ -28,7 +28,7 @@ return {
         ["README.md"] = {
           icon = "",
           color = "#42a5f5",
-          name = "README",
+          name = "ReadmeCustom",
         },
         [".sequelizerc"] = {
           icon = "",
@@ -72,6 +72,21 @@ return {
           color = "#42a5f5",
           name = "Markdown",
         },
+        zsh = {
+          icon = "",
+          color = "#FF8A65",
+          name = "Zsh",
+        },
+        sh = {
+          icon = "",
+          color = "#FF8A65",
+          name = "Shell",
+        },
+        txt = {
+          icon = "",
+          color = "#2196F3",
+          name = "Text",
+        },
       },
     },
     config = function(_, opts)
@@ -89,7 +104,25 @@ return {
           if (not ext or ext == "") and type(name) == "string" then
             ext = name:match("^.+%.([^.]+)$")
           end
-          return get_icon(name, ext, icon_opts)
+          local icon, hl = get_icon(name, ext, icon_opts)
+          if icon then
+            return icon, hl
+          end
+
+          -- Fallback for dotted filenames: if ".env.example" has no direct match,
+          -- retry progressively as ".env", enabling reusable "xxx.*" behavior.
+          if type(name) == "string" then
+            local prefix = name:match("^(.+)%.[^.]+$")
+            while prefix do
+              icon, hl = get_icon(prefix, nil, icon_opts)
+              if icon then
+                return icon, hl
+              end
+              prefix = prefix:match("^(.+)%.[^.]+$")
+            end
+          end
+
+          return icon, hl
         end
         devicons._basename_lookup_patched = true
       end
