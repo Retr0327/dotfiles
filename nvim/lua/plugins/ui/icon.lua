@@ -55,6 +55,11 @@ return {
           color = "#ff1744",
           name = "NestCliJson",
         },
+        ["SKILL.md"] = {
+          icon = "󰌵",
+          color = "#ff8f00",
+          name = "AgentSkillMarkdown",
+        },
       },
       override_by_extension = {
         js = {
@@ -85,7 +90,7 @@ return {
         md = {
           icon = "",
           color = "#42a5f5",
-          name = "Markdown",
+          name = "MarkdownCustom",
         },
         zsh = {
           icon = "",
