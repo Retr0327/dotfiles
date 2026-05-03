@@ -16,18 +16,15 @@ A comprehensive guide for my future self, so I don't have to time travel.
 
 | Tool | Minimum Version | Installation |
 | --- | --- | --- |
-| **Neovim** | 0.10+ | `brew install neovim` |
+| **Neovim** | 0.11+ | `brew install neovim` |
 | **tmux** | 3.3+ | `brew install tmux` |
-| **Node.js** | 18+ | [nvm](https://github.com/nvm-sh/nvm) |
-| **pnpm** | 9+ | `npm install -g pnpm` |
-| **Go** | 1.21+ | [gvm](https://github.com/moovweb/gvm) |
-| **Python** | 3.10+ | [uv](https://github.com/astral-sh/uv) |
-| **Ghostty** | —  | [ghostty](https://ghostty.org/) |
-| **ripgrep** | — | `brew install ripgrep` (Required for Snacks picker grep) |
-| **fd** | — | `brew install fd` (Required for Snacks picker files) |
-| **fzf** | — | `brew install fzf` (Required for tmux sessionizer) |
-| **lazygit** | — | `brew install lazygit` (Opened via `<leader>gg` in nvim) |
-| **make** | — | macOS: `xcode-select --install` |
+| **Node.js** | 22+ | [nvm](https://github.com/nvm-sh/nvm) |
+| **pnpm** | 10+ | `npm install -g pnpm` |
+| **Ghostty** | 1.3+  | [ghostty](https://ghostty.org/) |
+| **ripgrep** | 14+ | `brew install ripgrep` (Required for Snacks picker grep) |
+| **fd** | 10+ | `brew install fd` (Required for Snacks picker files) |
+| **fzf** | 0.61+ | `brew install fzf` (Required for tmux sessionizer) |
+| **lazygit** | 0.45+ | `brew install lazygit` (Opened via `<leader>gg` in nvim) |
 
 ---
 
