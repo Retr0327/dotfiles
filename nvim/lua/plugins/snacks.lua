@@ -9,7 +9,6 @@ return {
     bigfile = {
       enabled = true,
       size = 1.5 * 1024 * 1024,
-      disable = { "indent", "words" },
     },
     dashboard = {
       enabled = true,
@@ -36,10 +35,7 @@ return {
     },
     explorer = {
       enabled = true,
-      layout = {
-        cycle = false,
-        replace_netrw = true,
-      },
+      replace_netrw = true,
     },
     indent = { enabled = true },
     input = { enabled = true },
@@ -75,7 +71,7 @@ return {
           if diag and diag.message then
             local fname = vim.fn.fnamemodify(item.file or "", ":t")
             local line = item.pos and item.pos[1] or (diag.lnum + 1)
-            local col = item.pos and item.pos[2] or diag.col
+            local col = (item.pos and item.pos[2] or diag.col) + 1
             local code = diag.code and tostring(diag.code) or ""
             local source = diag.source or ""
             value = string.format(" %s %s (%s)   %s:%s:%s", diag.message, source, code, fname, line, col)
@@ -96,6 +92,9 @@ return {
       },
       sources = {
         explorer = {
+          layout = {
+            cycle = false,
+          },
           live = true,
           hidden = true, -- for hidden file
           ignored = true, -- for .gitignore files
@@ -119,7 +118,6 @@ return {
     statuscolumn = { enabled = true },
     words = { enabled = true },
     terminal = {
-      enabled = false,
       win = {
         position = "float",
         border = "rounded",
