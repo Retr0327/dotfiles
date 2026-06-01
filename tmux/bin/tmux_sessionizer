@@ -1,0 +1,75 @@
+#!/usr/bin/env zsh
+
+readonly CONFIG_FILE="$HOME/.config/tmux/bin/paths.zsh"
+
+if [[ -f "$CONFIG_FILE" ]]; then
+    source "$CONFIG_FILE"
+else
+    echo "Error: config file not found: $CONFIG_FILE" >&2
+    read -k 1 -s "?Press any key to exit..."
+    exit 1
+fi
+
+switch_to() {
+    local session_name="$1"
+    if [[ -z $TMUX ]]; then
+        tmux attach-session -t $session_name
+    else
+        tmux switch-client -t $session_name
+    fi
+}
+
+has_session() {
+    local session_name="$1"
+    tmux has-session -t "=$session_name" 2>/dev/null
+}
+
+hydrate() {
+    local session_name="$1"
+    local target_path="$2"
+
+    if [ -f "$target_path/.tmux-sessionizer" ]; then
+        tmux send-keys -t "$session_name" "source $target_path/.tmux-sessionizer" c-M
+    elif [ -f "$HOME/.tmux-sessionizer" ]; then
+        tmux send-keys -t "$session_name" "source $HOME/.tmux-sessionizer" c-M
+    fi
+}
+
+if [[ $# -eq 1 ]]; then
+    selected=$1
+else
+  if (( ${#exclude_paths[@]} > 0 )); then
+    selected=$(
+      fd . "${search_paths[@]}" --max-depth 1 --type d \
+      | rg -vxFf <(printf "%s/\n" "${exclude_paths[@]}") \
+      | cat - <(printf "%s\n" "${append_paths[@]}") \
+      | fzf
+    )
+  else
+    selected=$(
+      fd . "${search_paths[@]}" --max-depth 1 --type d \
+      | cat - <(printf "%s\n" "${append_paths[@]}") \
+      | fzf
+  )
+fi
+fi
+
+if [[ -z $selected ]]; then
+    exit 0
+fi
+
+selected_name=$(basename "$selected" | tr . _)
+tmux_running=$(pgrep tmux)
+
+if [[ -z $TMUX ]] && [[ -z $tmux_running ]]; then
+    tmux new-session -s $selected_name -c $selected
+    hydrate $selected_name $selected
+    exit 0
+fi
+
+if ! has_session $selected_name; then
+    tmux new-session -ds $selected_name -c $selected
+    hydrate $selected_name $selected
+fi
+
+switch_to $selected_name
