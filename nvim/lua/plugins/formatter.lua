@@ -1,9 +1,12 @@
 return {
   "stevearc/conform.nvim",
+  -- Load early: Conform must register BufWritePre before LSP organize-imports.
+  event = { "BufReadPre", "BufNewFile" },
   ---@module "conform"
   ---@type conform.setupOpts
   opts = {
     formatters_by_ft = {
+      -- Java omitted: use JDTLS LSP formatting.
       javascript = { "prettier", "eslint_d" },
       typescript = { "prettier", "eslint_d" },
       javascriptreact = { "prettier", "eslint_d" },
@@ -37,6 +40,9 @@ return {
     ---@type table<string, conform.FormatterConfigOverride|fun(bufnr: integer): nil|conform.FormatterConfigOverride>
     formatters = {
       injected = { options = { ignore_errors = true } },
+      prettier = {
+        append_args = { "--ignore-path", ".prettierignore" },
+      },
       ["markdown-toc"] = {
         condition = function(_, ctx)
           for _, line in ipairs(vim.api.nvim_buf_get_lines(ctx.buf, 0, -1, false)) do
