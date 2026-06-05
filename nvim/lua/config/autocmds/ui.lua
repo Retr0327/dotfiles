@@ -1,3 +1,5 @@
+local M = {}
+
 local groups = {
   "Normal",
   "NormalFloat",
@@ -10,16 +12,30 @@ local groups = {
   "BlinkCmpSignatureHelpBorder",
 }
 
-local function clear_float_backgrounds()
+-- Clear background while preserving other fields (like `fg`) to prevent plugin breakage.
+function M.clear_float_backgrounds()
   for _, group in ipairs(groups) do
-    vim.api.nvim_set_hl(0, group, { bg = "none" })
+    local ok, def = pcall(vim.api.nvim_get_hl, 0, {
+      name = group,
+      link = false,
+      create = false,
+    })
+
+    if ok and def then
+      def.bg = nil
+      def.ctermbg = nil
+      vim.api.nvim_set_hl(0, group, def)
+    end
   end
 end
 
-vim.api.nvim_create_augroup("custom_ui_transparent", { clear = true })
+local augroup = vim.api.nvim_create_augroup("custom_ui_transparent", {
+  clear = true,
+})
 
 vim.api.nvim_create_autocmd("ColorScheme", {
-  group = "custom_ui_transparent",
+  group = augroup,
   pattern = "*",
-  callback = clear_float_backgrounds,
+  desc = "Keep floating UI backgrounds transparent",
+  callback = M.clear_float_backgrounds,
 })
