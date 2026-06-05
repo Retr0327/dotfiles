@@ -28,7 +28,7 @@ local function exit_visual_mode()
   vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Esc>", true, false, true), "n", true)
 end
 
--- 1. Copy Path Reference (<leader>cp)
+-- 1. Copy Path Reference (<leader>cr)
 -- Output: src/utils/helper.ts:10-15
 local function copy_path_ref()
   local file_path = vim.fn.expand("%:.")
@@ -48,7 +48,7 @@ local function copy_path_ref()
   end
 end
 
--- 2. Copy Code with Context (<leader>cc)
+-- 2. Copy Code with Context (<leader>cR)
 -- Output:
 -- File: `src/utils/helper.ts:10-15`
 -- ```typescript
@@ -80,7 +80,5 @@ local function copy_code_context()
   end
 end
 
--- Keymaps
--- 'n' for Normal mode, 'v' for Visual mode
-vim.keymap.set({ "n", "v" }, "<leader>cp", copy_path_ref, { desc = "Copy path:line for AI" })
-vim.keymap.set({ "n", "v" }, "<leader>cc", copy_code_context, { desc = "Copy code block for AI" })
+vim.keymap.set({ "n", "v" }, "<leader>cr", copy_path_ref, { desc = "Copy code reference (path:line)" })
+vim.keymap.set({ "n", "v" }, "<leader>cR", copy_code_context, { desc = "Copy code reference + block" })
