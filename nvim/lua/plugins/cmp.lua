@@ -249,7 +249,6 @@ return {
         },
       },
     },
-    opts_extend = { "sources.default" },
     config = function(_, opts)
       local ls = require("luasnip")
 
