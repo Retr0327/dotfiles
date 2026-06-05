@@ -39,3 +39,5 @@ vim.api.nvim_create_autocmd("ColorScheme", {
   desc = "Keep floating UI backgrounds transparent",
   callback = M.clear_float_backgrounds,
 })
+
+return M
