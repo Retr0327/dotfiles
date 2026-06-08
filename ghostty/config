@@ -15,9 +15,9 @@ cursor-style-blink = false
 
 shell-integration-features = no-cursor
 
-background-image = ./starfield.jpeg
+background-image = ./firewatch.jpg
 background-image-fit = cover
-background-image-opacity = 0.4
+background-image-opacity = 0.5
 
 background = #020203
 #background-blur-radius = 20
