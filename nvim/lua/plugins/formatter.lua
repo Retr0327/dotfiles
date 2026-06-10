@@ -74,7 +74,14 @@ return {
         })
         vim.cmd("write")
       end,
-      desc = "Format",
+      desc = "[F]ormat",
+    },
+    {
+      "<leader>F",
+      function()
+        vim.cmd("noautocmd write")
+      end,
+      desc = "Write without formatting",
     },
   },
 }
