@@ -37,20 +37,20 @@ return {
         RainbowDelimiterBlue = { fg = "#179FFF", ctermfg = 39 }, -- depth 2
       }
 
-      local function apply_palette()
-        for group, opts in pairs(palette) do
-          vim.api.nvim_set_hl(0, group, opts)
-        end
-      end
-
       vim.api.nvim_create_autocmd("ColorScheme", {
         group = vim.api.nvim_create_augroup("custom_rainbow_palette", { clear = true }),
         pattern = "*",
         desc = "Apply VSCode bracket-pair colors to rainbow-delimiters",
-        callback = apply_palette,
+        callback = function()
+          for group, highlight in pairs(palette) do
+            vim.api.nvim_set_hl(0, group, highlight)
+          end
+        end,
       })
 
-      apply_palette()
+      for group, highlight in pairs(palette) do
+        vim.api.nvim_set_hl(0, group, highlight)
+      end
     end,
   },
 }
