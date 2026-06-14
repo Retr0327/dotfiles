@@ -8,63 +8,6 @@ local function expand(spec)
   return out
 end
 
-local function with_prefixed_colored_names(icons, prefix)
-  local out = vim.deepcopy(icons or {})
-  for _, entry in pairs(out) do
-    if entry.color and entry.name and entry.name:sub(1, #prefix) ~= prefix then
-      entry.name = prefix .. entry.name
-    end
-  end
-  return out
-end
-
-local function match_pattern_icon(name, exact_filenames, pattern_icons)
-  local base = name
-  if type(base) == "string" then
-    base = base:match("([^/]+)$") or base
-  end
-
-  if type(base) ~= "string" then
-    return nil, base
-  end
-
-  local lower = base:lower()
-  if (exact_filenames or {})[lower] then
-    return nil, base
-  end
-
-  for _, entry in ipairs(pattern_icons or {}) do
-    if lower:match(entry.pattern) then
-      return entry, base
-    end
-  end
-
-  return nil, base
-end
-
-local function icon_highlight(entry)
-  return entry.name and "DevIcon" .. entry.name
-end
-
-local function highlight_colors(group)
-  if not group then
-    return nil, nil
-  end
-
-  local ok, hl = pcall(vim.api.nvim_get_hl, 0, { name = group, link = false })
-  if not ok or vim.tbl_isempty(hl) then
-    return nil, nil
-  end
-
-  local color = hl.fg and string.format("#%06x", hl.fg) or nil
-  return color, hl.ctermfg
-end
-
-local function icon_colors(entry)
-  local color, cterm_color = highlight_colors(icon_highlight(entry))
-  return color or entry.color, cterm_color or entry.cterm_color
-end
-
 return {
   {
     "nvim-tree/nvim-web-devicons",
@@ -207,16 +150,18 @@ return {
     },
     config = function(_, opts)
       local devicons = require("nvim-web-devicons")
-
-      local prefix = "Override"
-      local extension_icons = with_prefixed_colored_names(opts.override_by_extension, prefix)
-      local filename_icons = with_prefixed_colored_names(opts.override_by_filename, prefix)
-      local pattern_icons = vim.deepcopy(opts.match_by_pattern or {})
       local setup_opts = vim.deepcopy(opts)
+      local pattern_icons = setup_opts.match_by_pattern or {}
+      local name_prefix = "Override"
 
       setup_opts.match_by_pattern = nil
-      setup_opts.override_by_extension = extension_icons
-      setup_opts.override_by_filename = filename_icons
+      for _, key in ipairs({ "override_by_extension", "override_by_filename" }) do
+        for _, entry in pairs(setup_opts[key] or {}) do
+          if entry.color and entry.name and entry.name:sub(1, #name_prefix) ~= name_prefix then
+            entry.name = name_prefix .. entry.name
+          end
+        end
+      end
       devicons.setup(setup_opts)
 
       local function register_highlights()
@@ -236,7 +181,7 @@ return {
       })
 
       local exact_filenames = {}
-      for k in pairs(filename_icons) do
+      for k in pairs(setup_opts.override_by_filename or {}) do
         exact_filenames[k:lower()] = true
       end
 
@@ -248,18 +193,49 @@ return {
         }
         devicons._custom_pattern_icons = state
 
+        local function match_pattern_icon(name)
+          local base = name
+          if type(base) == "string" then
+            base = base:match("([^/]+)$") or base
+          end
+
+          if type(base) ~= "string" then
+            return nil, base
+          end
+
+          local lower = base:lower()
+          if (state.exact_filenames or {})[lower] then
+            return nil, base
+          end
+
+          for _, entry in ipairs(state.pattern_icons or {}) do
+            if lower:match(entry.pattern) then
+              return entry, base
+            end
+          end
+
+          return nil, base
+        end
+
         devicons.get_icon = function(name, ext, o)
-          local entry, base = match_pattern_icon(name, state.exact_filenames, state.pattern_icons)
+          local entry, base = match_pattern_icon(name)
           if entry then
-            return entry.icon, icon_highlight(entry)
+            return entry.icon, entry.name and "DevIcon" .. entry.name
           end
           return state.original_get_icon(base or name, ext, o)
         end
 
         devicons.get_icon_colors = function(name, ext, o)
-          local entry, base = match_pattern_icon(name, state.exact_filenames, state.pattern_icons)
+          local entry, base = match_pattern_icon(name)
           if entry then
-            local color, cterm_color = icon_colors(entry)
+            local color, cterm_color = entry.color, entry.cterm_color
+            if entry.name then
+              local ok, hl = pcall(vim.api.nvim_get_hl, 0, { name = "DevIcon" .. entry.name, link = false })
+              if ok and not vim.tbl_isempty(hl) then
+                color = hl.fg and string.format("#%06x", hl.fg) or color
+                cterm_color = hl.ctermfg or cterm_color
+              end
+            end
             return entry.icon, color, cterm_color
           end
           return state.original_get_icon_colors(base or name, ext, o)
