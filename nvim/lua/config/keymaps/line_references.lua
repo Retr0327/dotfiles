@@ -77,9 +77,9 @@ local function copy_line_reference_with_block()
   end
 end
 
-vim.keymap.set({ "n", "n" }, "<leader>lr", copy_line_reference, { desc = "Copy absolute line reference" })
+vim.keymap.set({ "n", "v" }, "<leader>lr", copy_line_reference, { desc = "Copy absolute line reference" })
 vim.keymap.set(
-  { "n", "n" },
+  { "n", "v" },
   "<leader>lR",
   copy_line_reference_with_block,
   { desc = "Copy absolute line reference + block" }
