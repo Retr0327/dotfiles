@@ -53,6 +53,32 @@ return {
 
           vim.fn.setreg("+", table.concat(paths, "\n"))
         end,
+        yank_selected_text = function(picker)
+          local texts = {}
+
+          for _, item in ipairs(picker:selected()) do
+            if item.text then
+              texts[#texts + 1] = item.text
+            end
+          end
+
+          if #texts == 0 then
+            return
+          end
+
+          if #texts == 1 then
+            vim.fn.setreg("+", texts[1])
+          else
+            local lines = {}
+            for _, text in ipairs(texts) do
+              lines[#lines + 1] = "- " .. text
+            end
+            vim.fn.setreg("+", table.concat(lines, "\n"))
+          end
+
+          picker.list:set_selected()
+          Snacks.notify.info("selected text yanked")
+        end,
         explorer_yank_selected = function(picker)
           local paths = {}
 
@@ -93,6 +119,34 @@ return {
         end,
       },
       sources = {
+        diagnostics = {
+          win = {
+            input = {
+              keys = {
+                ["<C-y>"] = { "yank_selected_text", mode = { "n", "i" }, desc = "Yank selected text" },
+              },
+            },
+            list = {
+              keys = {
+                ["<C-y>"] = { "yank_selected_text", mode = { "n", "i" }, desc = "Yank selected text" },
+              },
+            },
+          },
+        },
+        diagnostics_buffer = {
+          win = {
+            input = {
+              keys = {
+                ["<C-y>"] = { "yank_selected_text", mode = { "n", "i" }, desc = "Yank selected text" },
+              },
+            },
+            list = {
+              keys = {
+                ["<C-y>"] = { "yank_selected_text", mode = { "n", "i" }, desc = "Yank selected text" },
+              },
+            },
+          },
+        },
         explorer = {
           layout = {
             cycle = false,
@@ -112,6 +166,20 @@ return {
                 ["y"] = { "explorer_yank_selected", mode = { "n" }, desc = "Yank selected files/folders" },
                 ["p"] = { "explorer_paste_files_or_dirs", desc = "Paste files/folders" },
                 ["<leader>fp"] = { "copy_path", mode = { "n" }, desc = "Copy absolute path" },
+              },
+            },
+          },
+        },
+        notifications = {
+          win = {
+            input = {
+              keys = {
+                ["<C-y>"] = { "yank_selected_text", mode = { "n", "i" }, desc = "Yank selected text" },
+              },
+            },
+            list = {
+              keys = {
+                ["<C-y>"] = { "yank_selected_text", mode = { "n", "i" }, desc = "Yank selected text" },
               },
             },
           },
