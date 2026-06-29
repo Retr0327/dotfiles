@@ -43,52 +43,60 @@ return {
       enabled = true,
       ui_select = true,
       actions = {
-        explorer_paste = function(picker)
-          local reg = vim.v.register or "+"
-          local files = vim.split(vim.fn.getreg(reg) or "", "\n", { plain = true })
+        copy_path = function(picker)
+          local paths = {}
+
+          for _, item in ipairs(picker:selected({ fallback = true })) do
+            local path = Snacks.picker.util.path(item)
+            if path then
+              paths[#paths + 1] = path
+            end
+          end
+
+          if #paths == 0 then
+            return
+          end
+
+          vim.fn.setreg("+", table.concat(paths, "\n"))
+        end,
+        explorer_yank_selected = function(picker)
+          local paths = {}
+
+          for _, item in ipairs(picker:selected()) do
+            local path = Snacks.picker.util.path(item)
+            if path then
+              paths[#paths + 1] = path
+            end
+          end
+
+          if #paths == 0 then
+            return
+          end
+
+          vim.fn.setreg(vim.v.register, table.concat(paths, "\n"), "l")
+          picker.list:set_selected()
+          Snacks.notify.info("files/folders yanked")
+        end,
+        explorer_paste_files_or_dirs = function(picker)
+          local uv = vim.uv or vim.loop
+          local files = vim.split(vim.fn.getreg(vim.v.register) or "", "\n", { plain = true })
+
           files = vim.tbl_filter(function(file)
-            return file ~= "" and vim.uv.fs_stat(file) ~= nil
+            return file ~= "" and uv.fs_stat(file) ~= nil
           end, files)
 
           if #files == 0 then
-            return Snacks.notify.warn(("The `%s` register does not contain any files"):format(reg))
+            return
           end
 
           local dir = picker:dir()
           Snacks.picker.util.copy(files, dir)
 
-          local tree = require("snacks.explorer.tree")
-          tree:refresh(dir)
-          tree:open(dir)
+          local Tree = require("snacks.explorer.tree")
+          Tree:refresh(dir)
+          Tree:open(dir)
           require("snacks.explorer.actions").update(picker, { target = dir })
         end,
-        yank_diagnostic = function(picker, item)
-          if not item then
-            return
-          end
-          local diag = item.item
-          local value
-          if diag and diag.message then
-            local fname = vim.fn.fnamemodify(item.file or "", ":t")
-            local line = item.pos and item.pos[1] or (diag.lnum + 1)
-            local col = (item.pos and item.pos[2] or diag.col) + 1
-            local code = diag.code and tostring(diag.code) or ""
-            local source = diag.source or ""
-            value = string.format(" %s %s (%s)   %s:%s:%s", diag.message, source, code, fname, line, col)
-          else
-            value = item.text or ""
-          end
-          vim.fn.setreg(vim.v.register, value)
-          vim.fn.setreg("+", value)
-          Snacks.notify(value, { title = "Yanked Diagnostic" })
-        end,
-      },
-      win = {
-        input = {
-          keys = {
-            ["<c-y>"] = { "yank_diagnostic", mode = { "i", "n" }, desc = "Yank diagnostic" },
-          },
-        },
       },
       sources = {
         explorer = {
@@ -104,6 +112,15 @@ return {
           },
           diagnostics = false, -- do not show diagnostics in explorer
           diagnostics_open = false,
+          win = {
+            list = {
+              keys = {
+                ["y"] = { "explorer_yank_selected", mode = { "n" }, desc = "Yank selected files/folders" },
+                ["p"] = { "explorer_paste_files_or_dirs", desc = "Paste files/folders" },
+                ["<leader>fp"] = { "copy_path", mode = { "n" }, desc = "Copy absolute path" },
+              },
+            },
+          },
         },
       },
       icons = {
