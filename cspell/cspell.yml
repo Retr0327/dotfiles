@@ -2,12 +2,22 @@ $schema: https://raw.githubusercontent.com/streetsidesoftware/cspell/main/cspell
 
 language: en
 import:
+  - ~/.config/cspell/dicts/node_modules/@cspell/dict-golang/cspell-ext.json
+  - ~/.config/cspell/dicts/node_modules/@cspell/dict-node/cspell-ext.json
+  - ~/.config/cspell/dicts/node_modules/@cspell/dict-python/cspell-ext.json
+  - ~/.config/cspell/dicts/node_modules/@cspell/dict-typescript/cspell-ext.json
   - ~/.config/cspell/dicts/node_modules/@cspell/dict-vim/cspell-ext.json
+  - ~/.config/cspell/dicts/node_modules/@cspell/dict-java/cspell-ext.json
 
 dictionaries:
   - custom
   - shellscript
   - vim
+  - python
+  - typescript
+  - golang
+  - node
+  - java
 
 dictionaryDefinitions:
   - name: "custom"
