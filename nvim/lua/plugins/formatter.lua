@@ -1,6 +1,6 @@
 return {
   "stevearc/conform.nvim",
-  -- Load early: Conform must register BufWritePre before LSP organize-imports.
+  -- Load before save hooks are needed for formatting.
   event = { "BufReadPre", "BufNewFile" },
   ---@module "conform"
   ---@type conform.setupOpts
@@ -64,7 +64,7 @@ return {
   },
   keys = {
     {
-      "<leader>f",
+      "<leader>ff",
       function()
         require("conform").format({
           lsp_format = "fallback",
@@ -74,14 +74,7 @@ return {
         })
         vim.cmd("write")
       end,
-      desc = "[F]ormat",
-    },
-    {
-      "<leader>F",
-      function()
-        vim.cmd("noautocmd write")
-      end,
-      desc = "Write without formatting",
+      desc = "[F]ile [F]ormat",
     },
   },
 }
